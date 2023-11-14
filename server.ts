@@ -7,7 +7,7 @@ import mongoose from 'mongoose';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import User from './models/user';
-import indexRouter from './routes/index';
+import apiRouter from './routes/api';
 dotenv.config();
 
 const app: Express = express();
@@ -71,7 +71,7 @@ passport.deserializeUser(async (id, done) => {
 	}
 });
 
-app.use('/', indexRouter);
+app.use('/api', apiRouter);
 
 async function startServer() {
 	try {
