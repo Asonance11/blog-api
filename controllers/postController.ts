@@ -17,3 +17,14 @@ export const allPosts = async (
 		res.status(500).json({ error: error.message.toString() });
 	}
 };
+
+export const singlePost = async (req: Request, res: Response) => {
+	const post = await Post.findById(req.params.postid).populate('user').exec();
+
+	if (!post) {
+		res.status(404).json({ error: 'Post not found' });
+		return;
+	}
+
+	res.json(post);
+};
