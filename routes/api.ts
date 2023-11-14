@@ -1,6 +1,6 @@
 import express from 'express';
 import { login, logout, signup } from '../controllers/authController';
-import { allPosts } from '../controllers/postController';
+import { allPosts, singlePost } from '../controllers/postController';
 
 const router = express.Router();
 
@@ -13,5 +13,7 @@ router.post('/logout', logout);
 // POSTS
 
 router.get('/posts', allPosts);
+
+router.get('/posts/:postid', singlePost);
 
 export default router;
