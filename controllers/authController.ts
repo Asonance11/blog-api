@@ -110,3 +110,8 @@ export const login = [
 		}
 	},
 ];
+
+export const logout = (req: Request, res: Response, next: NextFunction) => {
+	// req.logout();
+	console.log('Logged out');
+};
