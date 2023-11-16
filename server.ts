@@ -5,6 +5,7 @@ import express, { Express } from 'express';
 import session from 'express-session';
 import mongoose from 'mongoose';
 import passport from 'passport';
+import { ExtractJwt, Strategy as JWTStrategy } from 'passport-jwt';
 import { Strategy as LocalStrategy } from 'passport-local';
 import User from './models/user';
 import apiRouter from './routes/api';
@@ -54,6 +55,26 @@ passport.use(
 			return done(null, user);
 		} catch (error) {
 			return done(error);
+		}
+	})
+);
+
+const jwtOptions = {
+	jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+	secretOrKey: process.env.JWT_SECRET as string,
+};
+passport.use(
+	new JWTStrategy(jwtOptions, async (jwtPayload, done) => {
+		try {
+			const user = await User.findById(jwtPayload.id);
+
+			if (user) {
+				return done(null, user);
+			} else {
+				return done(null, false);
+			}
+		} catch (error) {
+			return done(error, false);
 		}
 	})
 );
