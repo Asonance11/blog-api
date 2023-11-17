@@ -21,6 +21,6 @@ router.get('/posts', protectedRoute, allPosts);
 
 router.get('/posts/:postid', protectedRoute, singlePost);
 
-router.post('/create-post', protectedRoute, createPost);
+router.post('/posts', protectedRoute, createPost);
 
 export default router;
