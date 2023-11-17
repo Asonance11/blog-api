@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
+import Comment from '../models/comment';
 import Post from '../models/post';
 import { IUser } from '../models/user';
 
@@ -146,3 +147,29 @@ export const updatePost = [
 		}
 	},
 ];
+
+export const deletePost = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	try {
+		const user = req.user as IUser | undefined;
+
+		if (!user) {
+			return res.status(401).json({ message: 'Unauthorized' });
+		}
+		const post = await Post.findByIdAndDelete(req.params.postid);
+
+		if (!post) {
+			res
+				.status(404)
+				.json({ message: `Post with id ${req.params.postid} not found` });
+		}
+		const comments = await Comment.deleteMany({ post: req.params.postid });
+
+		res.status(200).json({ message: 'Post deleted successfully' });
+	} catch (error: any) {
+		res.status(500).json({ message: 'Internal server error' });
+	}
+};
