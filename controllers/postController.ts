@@ -21,14 +21,18 @@ export const allPosts = async (
 };
 
 export const singlePost = async (req: Request, res: Response) => {
-	const post = await Post.findById(req.params.postid).populate('user').exec();
+	try {
+		const post = await Post.findById(req.params.postid).populate('user').exec();
 
-	if (!post) {
-		res.status(404).json({ error: 'Post not found' });
-		return;
+		if (!post) {
+			res.status(404).json({ error: 'Post not found' });
+			return;
+		}
+
+		res.status(200).json(post);
+	} catch (error: any) {
+		res.status(500).json({ error: error.message.toString() });
 	}
-
-	res.json(post);
 };
 
 export const createPost = [
