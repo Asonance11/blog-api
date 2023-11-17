@@ -89,3 +89,60 @@ export const createPost = [
 		}
 	},
 ];
+
+export const updatePost = [
+	body('title')
+		.trim()
+		.isLength({ min: 1 })
+		.escape()
+		.withMessage('Title must not be empty.'),
+	body('title')
+		.trim()
+		.isLength({ max: 40 })
+		.withMessage('Title must not be more than 40 characters long.'),
+	body('content')
+		.trim()
+		.isLength({ min: 1 })
+		.escape()
+		.withMessage('Content must not be empty.'),
+
+	async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const errors = validationResult(req);
+
+			if (!errors.isEmpty()) {
+				res.status(400).json({ errors: errors.array() });
+			}
+
+			const user = req.user as IUser | undefined;
+
+			if (!user) {
+				return res.status(401).json({ message: 'Unauthorized' });
+			}
+
+			const { title, content } = req.body;
+
+			const post = await Post.findByIdAndUpdate(req.params.postid, {
+				title,
+				content,
+			});
+
+			if (!post) {
+				res
+					.status(404)
+					.json({ message: `Post with id ${req.params.postid} not found` });
+			}
+
+			res.status(200).json({ message: 'Post updated successfully' });
+		} catch (error: any) {
+			console.error(error);
+
+			if (error.name === 'ValidationError') {
+				return res
+					.status(400)
+					.json({ message: 'Validation error', errors: error.errors });
+			}
+			res.status(500).json({ message: 'Internal server error' });
+		}
+	},
+];
