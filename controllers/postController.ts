@@ -12,7 +12,7 @@ export const allPosts = async (
 	try {
 		const posts = await Post.find({})
 			.sort({ createdAt: -1 })
-			.populate('user')
+			.populate('user', { username: 1 })
 			.exec();
 
 		res.json(posts);
@@ -23,7 +23,9 @@ export const allPosts = async (
 
 export const singlePost = async (req: Request, res: Response) => {
 	try {
-		const post = await Post.findById(req.params.postid).populate('user').exec();
+		const post = await Post.findById(req.params.postid)
+			.populate('user', { username: 1 })
+			.exec();
 
 		if (!post) {
 			res.status(404).json({ error: 'Post not found' });
