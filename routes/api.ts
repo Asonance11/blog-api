@@ -4,6 +4,7 @@ import {
 	allPosts,
 	createPost,
 	singlePost,
+	updatePost,
 } from '../controllers/postController';
 import protectedRoute from '../middleware/protectedRoute';
 
@@ -22,5 +23,7 @@ router.get('/posts', protectedRoute, allPosts);
 router.get('/posts/:postid', protectedRoute, singlePost);
 
 router.post('/posts', protectedRoute, createPost);
+
+router.put('/posts/:postid/update', protectedRoute, updatePost);
 
 export default router;
