@@ -3,6 +3,7 @@ import { login, logout, signup } from '../controllers/authController';
 import {
 	allPosts,
 	createPost,
+	deletePost,
 	singlePost,
 	updatePost,
 } from '../controllers/postController';
@@ -25,5 +26,7 @@ router.get('/posts/:postid', protectedRoute, singlePost);
 router.post('/posts', protectedRoute, createPost);
 
 router.put('/posts/:postid/update', protectedRoute, updatePost);
+
+router.delete('/posts/:postid/delete', protectedRoute, deletePost);
 
 export default router;
