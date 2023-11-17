@@ -79,7 +79,7 @@ export const createPost = [
 
 			await post.save();
 
-			res.status(201).json({ message: 'Post created successfully' });
+			res.status(201).json({ message: 'Post created successfully', post });
 		} catch (error: any) {
 			console.error(error);
 
