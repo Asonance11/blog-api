@@ -17,9 +17,9 @@ router.post('/logout', logout);
 
 // POSTS
 
-router.get('/posts', allPosts);
+router.get('/posts', protectedRoute, allPosts);
 
-router.get('/posts/:postid', singlePost);
+router.get('/posts/:postid', protectedRoute, singlePost);
 
 router.post('/create-post', protectedRoute, createPost);
 
