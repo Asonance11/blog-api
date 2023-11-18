@@ -114,3 +114,28 @@ export const deleteComment = async (
 		res.status(500).json({ message: 'Internal server error' });
 	}
 };
+
+export const singleComment = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	try {
+		const user = req.user as IUser | undefined;
+
+		if (!user) {
+			return res.status(401).json({ message: 'Unauthorized' });
+		}
+
+		const comment = await Comment.findById(req.params.commentid);
+
+		if (!comment) {
+			return res.status(404).json({ message: 'Comment not found' });
+		}
+
+		res.status(200).json({ comment });
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ message: 'Internal server error' });
+	}
+};
