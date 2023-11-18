@@ -3,6 +3,7 @@ import { login, logout, signup } from '../controllers/authController';
 import {
 	commentsByPost,
 	createComment,
+	deleteComment,
 } from '../controllers/commentController';
 import {
 	allPosts,
@@ -38,5 +39,11 @@ router.delete('/posts/:postid/delete', protectedRoute, deletePost);
 router.get('/posts/:postid/comments', protectedRoute, commentsByPost);
 
 router.post('/posts/:postid/comments', protectedRoute, createComment);
+
+router.delete(
+	'/posts/:postid/comments/:commentid/delete',
+	protectedRoute,
+	deleteComment
+);
 
 export default router;
