@@ -30,9 +30,9 @@ router.get('/posts/:postid', protectedRoute, singlePost);
 
 router.post('/posts', protectedRoute, createPost);
 
-router.put('/posts/:postid/update', protectedRoute, updatePost);
+router.put('/posts/:postid', protectedRoute, updatePost);
 
-router.delete('/posts/:postid/delete', protectedRoute, deletePost);
+router.delete('/posts/:postid', protectedRoute, deletePost);
 
 // COMMENTS
 
@@ -41,7 +41,7 @@ router.get('/posts/:postid/comments', protectedRoute, commentsByPost);
 router.post('/posts/:postid/comments', protectedRoute, createComment);
 
 router.delete(
-	'/posts/:postid/comments/:commentid/delete',
+	'/posts/:postid/comments/:commentid',
 	protectedRoute,
 	deleteComment
 );
