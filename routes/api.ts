@@ -4,6 +4,7 @@ import {
 	commentsByPost,
 	createComment,
 	deleteComment,
+	singleComment,
 } from '../controllers/commentController';
 import {
 	allPosts,
@@ -45,5 +46,7 @@ router.delete(
 	protectedRoute,
 	deleteComment
 );
+
+router.get('/posts/:postid/comments/:commentid', protectedRoute, singleComment);
 
 export default router;
