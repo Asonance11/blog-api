@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 import Comment from '../models/comment';
+import Post from '../models/post';
 import { IUser } from '../models/user';
 
 export const createComment = [
@@ -15,6 +16,13 @@ export const createComment = [
 
 			if (!errors.isEmpty()) {
 				res.status(400).json({ errors: errors.array() });
+				return;
+			}
+
+			const post = await Post.findById(req.params.postid);
+
+			if (!post) {
+				res.status(404).json({ message: 'Post not found' });
 				return;
 			}
 
