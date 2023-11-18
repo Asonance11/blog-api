@@ -43,6 +43,8 @@ export const createComment = [
 
 			await newComment.save();
 
+			await post.updateOne({ $push: { comments: newComment._id } });
+
 			res
 				.status(201)
 				.json({ message: 'Comment created successfully', newComment });
