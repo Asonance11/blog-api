@@ -67,6 +67,13 @@ export const commentsByPost = async (
 	next: NextFunction
 ) => {
 	try {
+		const user = req.user as IUser | undefined;
+
+		if (!user) {
+			res.status(401).json({ message: 'Unauthorized' });
+			return;
+		}
+
 		const comments = await Comment.find({ post: req.params.postid })
 			.populate('user', { username: 1 })
 			.exec();
@@ -75,5 +82,35 @@ export const commentsByPost = async (
 	} catch (error) {
 		console.error(error);
 		res.status(200).json({ message: 'No comments' });
+	}
+};
+
+export const deleteComment = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	try {
+		const user = req.user as IUser | undefined;
+
+		if (!user) {
+			return res.status(401).json({ message: 'Unauthorized' });
+		}
+
+		const comment = await Comment.findByIdAndDelete(req.params.commentid);
+
+		if (!comment) {
+			res
+				.status(404)
+				.json({ message: `Comment with id ${req.params.commentid} not found` });
+		}
+
+		await Post.findByIdAndUpdate(req.params.postid, {
+			$pull: { comments: req.params.commentid },
+		});
+
+		res.status(200).json({ message: 'Comment deleted successfully' });
+	} catch (error: any) {
+		res.status(500).json({ message: 'Internal server error' });
 	}
 };
