@@ -1,6 +1,9 @@
 import express from 'express';
 import { login, logout, signup } from '../controllers/authController';
-import { createComment } from '../controllers/commentController';
+import {
+	commentsByPost,
+	createComment,
+} from '../controllers/commentController';
 import {
 	allPosts,
 	createPost,
@@ -31,6 +34,8 @@ router.put('/posts/:postid/update', protectedRoute, updatePost);
 router.delete('/posts/:postid/delete', protectedRoute, deletePost);
 
 // COMMENTS
+
+router.get('/posts/:postid/comments', protectedRoute, commentsByPost);
 
 router.post('/posts/:postid/comments', protectedRoute, createComment);
 
