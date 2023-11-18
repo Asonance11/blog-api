@@ -58,3 +58,20 @@ export const createComment = [
 		}
 	},
 ];
+
+export const commentsByPost = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	try {
+		const comments = await Comment.find({ post: req.params.postid })
+			.populate('user', { username: 1 })
+			.exec();
+
+		res.status(200).json({ comments });
+	} catch (error) {
+		console.error(error);
+		res.status(200).json({ message: 'No comments' });
+	}
+};
