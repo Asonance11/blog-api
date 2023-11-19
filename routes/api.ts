@@ -25,9 +25,9 @@ router.post('/logout', logout);
 
 // POSTS
 
-router.get('/posts', protectedRoute, allPosts);
+router.get('/posts', allPosts);
 
-router.get('/posts/:postid', protectedRoute, singlePost);
+router.get('/posts/:postid', singlePost);
 
 router.post('/posts', protectedRoute, createPost);
 
@@ -37,7 +37,7 @@ router.delete('/posts/:postid', protectedRoute, deletePost);
 
 // COMMENTS
 
-router.get('/posts/:postid/comments', protectedRoute, commentsByPost);
+router.get('/posts/:postid/comments', commentsByPost);
 
 router.post('/posts/:postid/comments', protectedRoute, createComment);
 
@@ -47,6 +47,6 @@ router.delete(
 	deleteComment
 );
 
-router.get('/posts/:postid/comments/:commentid', protectedRoute, singleComment);
+router.get('/posts/:postid/comments/:commentid', singleComment);
 
 export default router;
