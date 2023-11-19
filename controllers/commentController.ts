@@ -67,13 +67,6 @@ export const commentsByPost = async (
 	next: NextFunction
 ) => {
 	try {
-		const user = req.user as IUser | undefined;
-
-		if (!user) {
-			res.status(401).json({ message: 'Unauthorized' });
-			return;
-		}
-
 		const comments = await Comment.find({ post: req.params.postid })
 			.populate('user', { username: 1 })
 			.exec();
@@ -121,12 +114,6 @@ export const singleComment = async (
 	next: NextFunction
 ) => {
 	try {
-		const user = req.user as IUser | undefined;
-
-		if (!user) {
-			return res.status(401).json({ message: 'Unauthorized' });
-		}
-
 		const comment = await Comment.findById(req.params.commentid);
 
 		if (!comment) {
