@@ -34,7 +34,7 @@ export const signup = [
 			const userExists = await User.findOne({ username: req.body.username });
 
 			if (userExists) {
-				res.status(400).json({ message: 'User already exists' });
+				res.status(400).json({ errors: [{ msg: 'User already exists' }] });
 				return;
 			}
 
@@ -79,18 +79,24 @@ export const login = [
 				{ session: false },
 				(err: Error | null, user: IUser, info: any) => {
 					if (err) {
-						res.status(500).json({ message: 'Error authenticating user' });
+						res
+							.status(500)
+							.json({ errors: [{ msg: 'Error authenticating user' }] });
 						return;
 					}
 
 					if (!user) {
-						res.status(400).json({ message: 'Username or password incorrect' });
+						res
+							.status(400)
+							.json({ errors: [{ msg: 'Username or password incorrect' }] });
 						return;
 					}
 
 					req.login(user, (loginErr) => {
 						if (loginErr) {
-							res.status(500).json({ message: 'Error logging in user' });
+							res
+								.status(500)
+								.json({ errors: [{ msg: 'Error logging in user' }] });
 							return;
 						}
 
