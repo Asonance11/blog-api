@@ -106,7 +106,13 @@ export const login = [
 							{ expiresIn: '1d' }
 						);
 
-						res.status(200).json({ message: 'User logged in', token });
+						res
+							.status(200)
+							.json({
+								message: 'User logged in',
+								token,
+								user: { id: user._id, username: user.username },
+							});
 					});
 				}
 			)(req, res, next);
