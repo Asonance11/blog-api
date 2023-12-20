@@ -44,10 +44,6 @@ export const createPost = [
 		.isLength({ min: 1 })
 		.escape()
 		.withMessage('Title must not be empty.'),
-	body('title')
-		.trim()
-		.isLength({ max: 40 })
-		.withMessage('Title must not be more than 40 characters long.'),
 	body('content')
 		.trim()
 		.isLength({ min: 1 })
