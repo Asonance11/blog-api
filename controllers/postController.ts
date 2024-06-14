@@ -15,7 +15,11 @@ export const allPosts = async (
       .populate("user", { username: 1 })
       .exec();
 
-    res.json(posts);
+    if (!posts.length) {
+      return res.status(404).json({ message: "No posts found" });
+    }
+
+    res.status(200).json(posts);
   } catch (error: any) {
     res.status(500).json({ error: error.message.toString() });
   }
@@ -32,6 +36,12 @@ export const getLatestPosts = async (
       .limit(4)
       .populate("user", { username: 1 })
       .exec();
+
+    if (!posts.length) {
+      return res.status(404).json({ message: "No posts found" });
+    }
+
+    res.status(200).json(posts);
   } catch (error: any) {
     res.status(500).json({ error: error.message.toString() });
   }
