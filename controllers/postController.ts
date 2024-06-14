@@ -10,7 +10,7 @@ export const allPosts = async (
   next: NextFunction,
 ) => {
   try {
-    const posts = await Post.find({})
+    const posts = await Post.find({ published: true })
       .sort({ createdAt: -1 })
       .populate("user", { username: 1 })
       .exec();
@@ -31,7 +31,7 @@ export const getLatestPosts = async (
   next: NextFunction,
 ) => {
   try {
-    const posts = await Post.find({})
+    const posts = await Post.find({ published: true })
       .sort({ createdAt: -1 })
       .limit(4)
       .populate("user", { username: 1 })
@@ -75,6 +75,11 @@ export const createPost = [
     .isLength({ min: 1 })
     .escape()
     .withMessage("Content must not be empty."),
+  body("description")
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage("Description must not be empty."),
 
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -91,12 +96,13 @@ export const createPost = [
         return res.status(401).json({ message: "Unauthorized" });
       }
 
-      const { title, content, imageUrl } = req.body;
+      const { title, content, description, imageUrl } = req.body;
 
       const post = new Post({
         title,
         content,
         imageUrl,
+        description,
         user: user._id,
       });
 

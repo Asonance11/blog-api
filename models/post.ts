@@ -3,6 +3,7 @@ import mongoose, { Document, Schema } from "mongoose";
 export interface IPost extends Document {
   title: string;
   content: string;
+  description: string;
   user: Schema.Types.ObjectId;
   comments: Schema.Types.ObjectId[];
   published: boolean;
