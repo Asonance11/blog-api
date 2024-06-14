@@ -21,6 +21,22 @@ export const allPosts = async (
   }
 };
 
+export const getLatestPosts = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const posts = await Post.find({})
+      .sort({ createdAt: -1 })
+      .limit(4)
+      .populate("user", { username: 1 })
+      .exec();
+  } catch (error: any) {
+    res.status(500).json({ error: error.message.toString() });
+  }
+};
+
 export const singlePost = async (req: Request, res: Response) => {
   try {
     const post = await Post.findById(req.params.postid)
