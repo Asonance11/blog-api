@@ -70,11 +70,6 @@ export const createPost = [
     .isLength({ min: 1 })
     .escape()
     .withMessage("Title must not be empty."),
-  body("content")
-    .trim()
-    .isLength({ min: 1 })
-    .escape()
-    .withMessage("Content must not be empty."),
   body("description")
     .trim()
     .isLength({ min: 1 })
@@ -96,13 +91,14 @@ export const createPost = [
         return res.status(401).json({ message: "Unauthorized" });
       }
 
-      const { title, content, description, imageUrl } = req.body;
+      const { title, content, description, imageUrl, published } = req.body;
 
       const post = new Post({
         title,
         content,
         imageUrl,
         description,
+        published,
         user: user._id,
       });
 
